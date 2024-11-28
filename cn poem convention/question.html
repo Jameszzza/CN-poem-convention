@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>宋韵文化答题闯关</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            position: relative;
+            background-image: url("img/0.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-left: 5px solid #4CAF50;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .answers {
+            display: none;
+        }
+
+        .answers button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .answers button:hover {
+            background-color: #45a049;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        #start-btn {
+            padding: 10px 20px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 20px 0;
+        }
+
+        #start-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">宋韵文化答题闯关</h1>
+        <button id="start-btn">开始答题</button>
+    </div>
+    <div id="quiz">
+        <div class="question" id="q1">
+            宋代最著名的诗人是谁？
+        </div>
+        <div class="answers" id="a1">
+            <button onclick="checkAnswer(0, '苏轼')">A. 苏轼</button>
+            <button onclick="checkAnswer(0, '杜甫')">B. 杜甫</button>
+            <button onclick="checkAnswer(0, '李白')">C. 李白</button>
+            <button onclick="checkAnswer(0, '白居易')">D. 白居易</button>
+        </div>
+
+        <div class="question" id="q2" style="display: none;">
+            宋代的瓷器以哪个窑最为著名？
+        </div>
+        <div class="answers" id="a2" style="display: none;">
+            <button onclick="checkAnswer(1, '汝窑')">A. 景德镇窑</button>
+            <button onclick="checkAnswer(1, '定窑')">B. 定窑</button>
+            <button onclick="checkAnswer(1, '哥窑')">C. 哥窑</button>
+            <button onclick="checkAnswer(1, '汝窑')">D. 汝窑</button>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 0;
+        let score = 0;
+
+        document.getElementById('start-btn').addEventListener('click', function() {
+            this.style.display = 'none'; // 隐藏开始按钮
+            displayQuestion(currentQuestion);
+        });
+
+        function checkAnswer(qNum, answer) {
+            let correctAnswer = getCorrectAnswer(qNum);
+            if (answer === correctAnswer) {
+                score++;
+                alert("正确！");
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    displayQuestion(currentQuestion);
+                } else {
+                    alert("闯关完成！你的得分是：" + score + "/" + questions.length);
+                }
+            } else {
+                alert("错误！");
+            }
+        }
+
+        function displayQuestion(questionNumber) {
+            document.getElementById('q' + (questionNumber + 1)).style.display = 'block';
+            document.getElementById('a' + (questionNumber + 1)).style.display = 'block';
+            document.getElementById('q' + questionNumber).style.display = 'none';
+            document.getElementById('a' + questionNumber).style.display = 'none';
+        }
+
+        const questions = [
+            {
+                text: "宋代最著名的诗人是谁？",
+                correctAnswer: '苏轼'
+            },
+            {
+                text: "宋代的瓷器以哪个窑最为著名？",
+                correctAnswer: '汝窑'
+            }
+        ];
+
+        function getCorrectAnswer(questionNumber) {
+            return questions[questionNumber].correctAnswer;
+        }
+    </script>
+</body>
+</html>
