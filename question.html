@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>中国诗词答题闯关</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js" defer></script>
+    <style>
+        body {
+            font-family: '楷体', 'Arial', sans-serif;
+            position: relative;
+            background-image: url("img/0.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            color: #5C5C5C;
+            line-height: 1.6;
+        }
+		
+		.container {
+		    max-width: 800px;
+		    margin: 40px auto;
+		    padding: 20px;
+		    background: rgba(255, 255, 255, 0.8);
+		    border-radius: 8px;
+		    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		    text-align: center;
+		}
+		
+		h1 {
+		    color: #4CAF50;
+		    margin-bottom: 20px;
+		}
+		
+		.question {
+			font-size: 30px;
+		    margin-bottom: 20px;
+		    padding: 10px;
+		    background: #f9f9f9;
+		    border-left: 5px solid #4CAF50;
+		    border-radius: 5px;
+		    display: none;
+		    animation: fadeIn 1s ease-in-out;
+		}
+		
+		.answers {
+		    display: none;
+		}
+		
+		.answers button {
+		    margin: 5px;
+		    padding: 10px 20px;
+		    border: none;
+		    background-color: #6B8E23; /* 墨绿色 */
+		    color: white;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    transition: transform 0.2s ease, box-shadow 0.2s ease;
+		}
+		
+		.answers button:hover {
+		    transform: translateY(-2px);
+		    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		}
+		
+		button:focus {
+		    outline: none;
+		}
+		
+		#start-btn {
+		    padding: 10px 20px;
+		    border: none;
+		    background-color: #4CAF50;
+		    color: white;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    transition: background-color 0.3s ease;
+		    margin: 20px 0;
+		}
+		
+		#start-btn:hover {
+		    background-color: #45a049;
+		}
+		
+		#end-screen {
+		    display: none;
+		    text-align: center;
+		    animation: popIn 1s ease-in-out;
+		    background: rgba(255, 255, 255, 0.9); /* 提高背景透明度 */
+		    color: #333; /* 调整文字颜色为深灰色，提高对比度 */
+		    padding: 20px;
+		    border-radius: 8px;
+		    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+		
+		#end-screen h2 {
+		    color: #4CAF50; /* 结束屏幕标题颜色 */
+		}
+		
+		#end-screen p {
+		    color: #333; /* 结束屏幕文本颜色 */
+		}
+		
+		#end-screen button {
+		    padding: 10px 20px;
+		    border: none;
+		    background-color: #4CAF50; /* 按钮背景色 */
+		    color: white; /* 按钮文字颜色 */
+		    border-radius: 5px;
+		    cursor: pointer;
+		    transition: background-color 0.3s ease;
+		    margin-top: 20px;
+		}
+		
+		#end-screen button:hover {
+		    background-color: #45a049; /* 按钮悬浮背景色 */
+		}
+		
+		#music-btn {
+		    padding: 10px 20px;
+		    border: none;
+		    background-color: #4CAF50;
+		    color: white;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    transition: background-color 0.3s ease;
+		    margin-top: 20px;
+		}
+		
+		#music-btn:hover {
+		    background-color: #45a049;
+		}
+		
+		@keyframes fadeIn {
+		    from { opacity: 0; }
+		    to { opacity: 1; }
+		}
+		
+		@keyframes popIn {
+		    0% { transform: scale(0.5); opacity: 0; }
+		    80% { transform: scale(1.1); opacity: 1; }
+		    100% { transform: scale(1); }
+		}
+
+        /* 其他样式保持不变，添加响应式设计 */
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+                margin: 20px auto;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            .answers button {
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">中国诗词答题闯关</h1>
+        <button id="start-btn" aria-label="开始答题">开始答题</button>
+        <button id="music-btn" aria-label="播放/暂停音乐">暂停音乐</button>
+        <audio id="background-music" loop>
+            <source src="img/0.mp3" type="audio/mpeg">
+        </audio>
+        <div id="loading" style="display: none; text-align: center;">
+            <p>加载中...</p>
+        </div>
+    </div>
+	<div id="quiz">
+	    <div class="question" id="q1">
+	        宋代最著名的诗人是谁？
+	    </div>
+	    <div class="answers" id="a1">
+	        <button onclick="checkAnswer(0, '苏轼')">A. 苏轼</button>
+	        <button onclick="checkAnswer(0, '杜甫')">B. 杜甫</button>
+	        <button onclick="checkAnswer(0, '李白')">C. 李白</button>
+	        <button onclick="checkAnswer(0, '白居易')">D. 白居易</button>
+	    </div>
+	
+	    <div class="question" id="q2" style="display: none;">
+	        宋代的瓷器以哪个窑最为著名？
+	    </div>
+	    <div class="answers" id="a2" style="display: none;">
+	        <button onclick="checkAnswer(1, '景德镇窑')">A. 景德镇窑</button>
+	        <button onclick="checkAnswer(1, '定窑')">B. 定窑</button>
+	        <button onclick="checkAnswer(1, '哥窑')">C. 哥窑</button>
+	        <button onclick="checkAnswer(1, '汝窑')">D. 汝窑</button>
+	    </div>
+		<div class="question" id="q3" style="display: none;">
+		    李白是哪一个朝代的人？
+		</div>
+		<div class="answers" id="a3" style="display: none;">
+		    <button onclick="checkAnswer(2, '唐')">A. 唐</button>
+		    <button onclick="checkAnswer(2, '宋')">B. 宋</button>
+		    <button onclick="checkAnswer(2, '元')">C. 元</button>
+		    <button onclick="checkAnswer(2, '汉')">D. 汉</button>
+		</div>
+			
+		<div class="question" id="q4" style="display: none;">
+		    宋代的书法以哪种风格最为著名？
+		</div>
+		<div class="answers" id="a4" style="display: none;">
+		    <button onclick="checkAnswer(3, '行书')">A. 行书</button>
+		    <button onclick="checkAnswer(3, '楷书')">B. 楷书</button>
+		    <button onclick="checkAnswer(3, '草书')">C. 草书</button>
+		    <button onclick="checkAnswer(3, '隶书')">D. 隶书</button>
+		</div>
+	    <div class="question" id="q5" style="display: none;">
+	        “春眠不觉晓，处处闻啼鸟”出自哪位诗人的作品？
+	    </div>
+	    <div class="answers" id="a5" style="display: none;">
+	        <button onclick="checkAnswer(4, '孟浩然')">A. 孟浩然</button>
+	        <button onclick="checkAnswer(4, '杜甫')">B. 杜甫</button>
+	        <button onclick="checkAnswer(4, '李白')">C. 李白</button>
+	        <button onclick="checkAnswer(4, '王维')">D. 王维</button>
+	    </div>
+	    
+	    <div class="question" id="q6" style="display: none;">
+	        “会当凌绝顶，一览众山小”是杜甫在赞美哪座山？
+	    </div>
+	    <div class="answers" id="a6" style="display: none;">
+	        <button onclick="checkAnswer(5, '泰山')">A. 泰山</button>
+	        <button onclick="checkAnswer(5, '华山')">B. 华山</button>
+	        <button onclick="checkAnswer(5, '嵩山')">C. 嵩山</button>
+	        <button onclick="checkAnswer(5, '衡山')">D. 衡山</button>
+	    </div>
+		<div class="question" id="q7" style="display: none;">
+		    “但愿人长久，千里共婵娟”是哪位诗人对亲人的思念之情？
+		</div>
+		<div class="answers" id="a7" style="display: none;">
+		    <button onclick="checkAnswer(6, '苏轼')">A. 苏轼</button>
+		    <button onclick="checkAnswer(6, '辛弃疾')">B. 辛弃疾</button>
+		    <button onclick="checkAnswer(6, '李清照')">C. 李清照</button>
+		    <button onclick="checkAnswer(6, '柳永')">D. 柳永</button>
+		</div>
+		<div class="question" id="q8" style="display: none;">
+		    “不以物喜，不以己悲”体现了诗人怎样的人生观？
+		</div>
+		<div class="answers" id="a8" style="display: none;">
+		    <button onclick="checkAnswer(7, '悲观主义')">A. 悲观主义</button>
+		    <button onclick="checkAnswer(7, '乐观主义')">B. 乐观主义</button>
+		    <button onclick="checkAnswer(7, '现实主义')">C. 现实主义</button>
+			<button onclick="checkAnswer(7, '理想主义')">C. 理想主义</button>
+		</div>
+	    <!-- 添加更多的问题 -->
+	</div>
+    <!-- 结束屏幕 -->
+    <div id="end-screen" style="display: none;">
+        <h2>闯关完成！</h2>
+        <p>你的得分是：<span id="final-score"></span> / 8</p>
+        <button id="restart-btn" aria-label="再玩一次">再玩一次</button>
+        <button id="share-btn" aria-label="分享成绩">分享成绩</button>
+    </div>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+		    document.getElementById('loading').style.display = 'none';
+		});
+		
+		let currentQuestion = 0;
+		let score = 0;
+		const music = document.getElementById('background-music');
+		const correctSound = new Audio('img/1.mp3');
+		const wrongSound = new Audio('img/2.mp3');
+		
+		document.getElementById('start-btn').addEventListener('click', function() {
+		    this.style.display = 'none';
+		    music.play();
+		    displayQuestion(currentQuestion);
+		});
+		
+		document.getElementById('restart-btn').addEventListener('click', function() {
+		    location.reload();
+		});
+		
+		document.getElementById('music-btn').addEventListener('click', function() {
+		    if (music.paused) {
+		        music.play();
+		        this.textContent = '暂停音乐';
+		    } else {
+		        music.pause();
+		        this.textContent = '播放音乐';
+		    }
+		});
+		
+		document.getElementById('background-music').onerror = function() {
+		    alert('音频文件加载失败，请检查您的网络连接或文件路径。');
+		};
+		
+		function checkAnswer(qNum, answer) {
+		    let correctAnswer = getCorrectAnswer(qNum);
+		    if (answer === correctAnswer) {
+		        score++;
+		        correctSound.play();
+		        window.navigator.vibrate(100);
+		    } else {
+		        wrongSound.play();
+		        window.navigator.vibrate([100, 50, 100]);
+		    }
+		    currentQuestion++;
+		    if (currentQuestion < questions.length) {
+		        displayQuestion(currentQuestion);
+		    } else {
+		        displayEndScreen();
+		    }
+		}
+		
+		function displayQuestion(questionNumber) {
+		    document.getElementById('q' + (questionNumber + 1)).style.display = 'block';
+		    document.getElementById('a' + (questionNumber + 1)).style.display = 'block';
+		    document.getElementById('q' + currentQuestion).style.display = 'none';
+		    document.getElementById('a' + currentQuestion).style.display = 'none';
+		}
+		
+		function displayEndScreen() {
+		    document.getElementById('end-screen').style.display = 'block';
+		    document.getElementById('final-score').textContent = score;
+		    music.pause();
+		    music.currentTime = 0;
+		    for (let i = 1; i <= questions.length; i++) {
+		        document.getElementById('q' + i).style.display = 'none';
+		        document.getElementById('a' + i).style.display = 'none';
+		    }
+		}
+		
+		const questions = [
+		    {
+		        text: "宋代最著名的诗人是谁？",
+		        correctAnswer: '苏轼'
+		    },
+		    {
+		        text: "宋代的瓷器以哪个窑最为著名？",
+		        correctAnswer: '汝窑'
+		    },
+		    {
+		        text: "李白是哪一个朝代的人？",
+		        correctAnswer: '唐'
+		    },
+		    {
+		        text: "宋代的书法以哪种风格最为著名？",
+		        correctAnswer: '行书'
+		    },
+			{
+			    text: "“春眠不觉晓，处处闻啼鸟”出自哪位诗人的作品？",
+			    correctAnswer: '孟浩然'
+			},
+			{
+		        text: "“会当凌绝顶，一览众山小”是杜甫在赞美哪座山？",
+			    correctAnswer: '泰山'
+			},
+			{
+			    text: "“但愿人长久，千里共婵娟”是哪位诗人对亲人的思念之情？",
+			    correctAnswer: '苏轼'
+			},
+			{
+			    text: "“不以物喜，不以己悲”体现了诗人怎样的人生观？",
+			    correctAnswer: ' 现实主义'
+			},
+		];
+		
+		function getCorrectAnswer(questionNumber) {
+		    return questions[questionNumber].correctAnswer;
+		}
+	</script>
+</body>
+</html>

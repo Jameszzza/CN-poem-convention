@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>了解诗人</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('img/background.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; 
+            font-family: 'Noto Serif CJK', Arial, sans-serif;
+        }
+
+        .container {
+            width: 550px;
+            margin: 0 auto;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8); /* 半透明背景 */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #container {
+            position: relative;
+            width: 550px;
+            height: 300px;
+            border: 3px solid #333;
+            overflow: hidden;
+        }
+
+        #list {
+            position: absolute;
+            z-index: 1;
+            width: 2750px; 
+            height: 252px;
+            display: flex;
+            transition: left 0.3s ease; /* 添加平滑过渡效果 */
+        }
+
+        #list img {
+            width: 550px;
+            transition: all 0.3s ease;
+        }
+
+        .arrow {
+            display: block;
+            position: absolute;
+            top: 105px;
+            z-index: 2;
+            display: none;
+            width: 40px;
+            height: 60px;
+            font-size: 36px;
+            font-weight: bold;
+            line-height: 50px;
+            text-align: center;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #container:hover .arrow {
+            display: block;
+        }
+
+        #prev {
+            left: 3px;
+        }
+
+        #next {
+            right: 20px;
+        }
+
+        .arrow:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .info-container {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        /* 静音按钮样式调整 */
+        .mute-button {
+            position: absolute; /* 使用绝对定位 */
+            top: 10px;
+            left: 10px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 3; /* 确保按钮位于最前面 */
+        }
+
+        .mute-button:hover {
+            background-color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="container">
+            <div id="list" style="left:0px;">
+                <img src="img/libai.jpg" />
+                <img src="img/dufu.jpg" />
+                <img src="img/baijuyi.jpg" />
+                <img src="img/wangwei.jpg" />
+                <img src="img/xinqiji.jpg" />
+            </div>
+            <span id="prev" class="arrow" onclick="last()">《</span>
+            <span id="next" class="arrow" onclick="next()">》</span>
+        </div>
+        <div class="info-container" id="poet-info">
+            <p>李白：唐代诗人，被誉为‘诗仙’。代表作品：《将进酒》、《庐山谣》。经典诗句：‘君不见，黄河之水天上来，奔流到海不复回。’</p>
+        </div>
+        <button class="mute-button" onclick="toggleMute()">静音</button>
+    </div>
+
+    <!-- 音频元素 -->
+    <audio id="audio" autoplay loop>
+        <source src="media/audio/1111111.mp3" type="audio/mp3">
+        
+    </audio>
+
+    <script>
+        var list = document.getElementById('list');
+        var poetInfo = document.getElementById('poet-info');
+        var audio = document.getElementById('audio');
+        
+        var poetInfos = [
+            "李白：唐代诗人，被誉为‘诗仙’。代表作品：《将进酒》、《庐山谣》。经典诗句：‘君不见，黄河之水天上来，奔流到海不复回。’",
+            "杜甫：唐代诗人，被誉为‘诗圣’。代表作品：《春望》、《望岳》。经典诗句：‘国破山河在，城春草木深。’",
+            "白居易：唐代诗人，政治家，代表作品：《长恨歌》、《琵琶行》。经典诗句：‘同是天涯沦落人，相逢何必曾相识。’",
+            "辛弃疾：宋代词人，豪放派代表，代表作品：《青玉案·元夕》、《破阵子》。经典诗句：‘想当年，金戈铁马，气吞万里如虎。’",
+            "王维：唐代诗人，画家。代表作品：《山居秋暝》、《送别》。经典诗句：‘空山不见人，但闻人语响。’"
+        ];
+
+        // 初始化时设置文本内容为李白的信息
+        poetInfo.innerHTML = "<p>" + poetInfos[0] + "</p>";
+
+        // 切换到上一个图片
+        function last() {
+            var newLeft = parseInt(list.style.left, 10) + 550;
+            if(newLeft > 0) {
+                list.style.left = '-2200px'; // 处理溢出
+            } else {
+                list.style.left = newLeft + 'px';
+            }
+            updatePoetInfo();
+        }
+
+        // 下一个
+        function next() {
+            var newLeft = parseInt(list.style.left, 10) - 550;
+            if(newLeft < -2200) {
+                list.style.left = '0px'; // 处理溢出
+            } else {
+                list.style.left = newLeft + 'px';
+            }
+            updatePoetInfo();
+        }
+
+        // 更新文本内容 计算索引位置
+        function updatePoetInfo() {
+            var index = Math.abs(parseInt(list.style.left, 10) / 550);
+            poetInfo.innerHTML = "<p>" + poetInfos[index] + "</p>";
+        }
+
+        // 切换音频静音状态
+        function toggleMute() {
+            if (audio.muted) {
+                audio.muted = false;  // 取消静音
+            } else {
+                audio.muted = true;   // 设置为静音
+            }
+        }
+    </script>
+</body>
+</html>
