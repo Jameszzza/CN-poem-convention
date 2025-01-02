@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>诗歌学习</title>
+    <meta charset="utf-8"/>
+    <style type="text/css">
+	  html,body{
+        margin:0px;
+		background-image: url('img/background.jpg');
+      }
+      .title{
+        width:1000px;
+        margin:20px auto;
+        box-shadow:0px 0px 4px 4px #EDEDED;
+        text-indent:10px;
+        line-height:50px;
+		background-color: #f0efe2;
+      }
+      .title1{
+		text-align: center;
+        border-bottom:1px solid #CBCBC9;
+        font-size:40px;
+        font-weight:bold;
+		background-color: #f0efe2;
+      }
+      .title2{
+		text-align: justify;
+        font-size:20px;
+        color:black;
+		background-color: #f0efe2;
+      }
+      /*内容样式*/
+      .links{
+        background-color:#FFF6E8;
+        color:#F4AA3B;
+      }
+      .curlink{
+        font-weight:bold;
+        width:200px;
+        margin-left:25px;
+        margin-top:25px;
+      }
+      .linktext{
+        width:900px;
+        margin:auto auto;
+      }
+      p{
+        line-height:30px;
+        text-indent:0px;
+      }
+      .txt{
+		background-color: #f0efe2;
+		text-align: center;
+      }
+	  a:visited{
+		color:green;
+	    text-decoration:none;
+	  }
+	  .progressBar{
+	        	width:1000px;
+	        	height:100px;
+	        	margin:0px auto 0px auto;
+				background-color: #f0efe2;
+				box-shadow:0px 0px 4px 4px #EDEDED;
+	        }
+	    .titleDiv{
+	        	width:1000px;
+	        	height:30px;
+				background-color: #f0efe2;
+	        }
+	    .titleDiv div{
+	        	float:left;
+	        	width:200px;
+	        	text-align:center;
+	        	
+	        }
+	    .barDiv{
+	        	width:1000px;
+	        	height:30px;
+	        }
+	    .numberList{
+	        	position:relative;
+	        	width:1000px;
+	        	height:30px;
+	        	display:flex;
+	        	justify-content:space-around;
+	        }
+	    #num1,#num2,#num3,#num4,#num5{
+	        	background-color:#DAD9D9;
+	        	width:30px;
+	        	height:30px;
+	        	display:flex;
+	        	justify-content:center;
+	        	align-items:center;
+	        	border-radius:30px;
+	        	cursor:pointer;
+	        	transition:all 0.5s ease;
+	        }
+	    #num1{
+	          background-color:#64BD2E;
+	          color:white;
+	        }
+	    .bar{
+	        	position:relative;
+	        	background-color:#DDDDDD;
+	        	width:1000px;
+	        	height:5px;
+	        	top:17px;
+	        }
+	    #greenBar{
+	        	width:20%;
+	        	height:5px;
+	        	background-color:#64BD2E;
+	        	transition:all 0.5s ease;
+	        }
+    </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // 显示和隐藏作者简介的功能
+            $(".links").hover(
+                function() {
+                    $(".text").show();
+                },
+                function() {
+                    $(".text").hide();
+                }
+            );
+
+            // 初始化进度条样式
+            function setProgressBarStyle(step) {
+                for (var i = 1; i <= 5; i++) {
+                    if (i <= step) {
+                        $("#num" + i).css({ "background-color": "#64BD2E", "color": "white" });
+                    } else {
+                        $("#num" + i).css({ "background-color": "#DAD9D9", "color": "black" });
+                    }
+                }
+                $("#greenBar").css("width", step * 20 + "%");
+            }
+
+            // 绑定点击事件到进度条数字
+            $(".numberList div").click(function() {
+                var step = parseInt($(this).text());
+                setProgressBarStyle(step);
+            });
+
+            // 初始化进度条到第一步
+            setProgressBarStyle(1);
+			
+			 $(".title1").click(function() {
+				 var audio = document.getElementById("qiangjinjiuAudio");
+				 if (audio.paused) {
+				    audio.play();
+				} 
+				else {
+				    audio.pause();
+				}
+			});
+        });
+    </script>
+</head>
+<body>
+    <div class="title">
+        <div class="title1">将进酒(点击播放音频)</div>
+        <div class="title2" style="word-spacing: 600px;">↓点击查看李白的重大人生节点↓ 唐·李白</div>
+    </div>
+	
+	<audio id="qiangjinjiuAudio" src="media/audio/qiangjinjiu.mp3" style="display:none;"></audio>
+
+    <div class="progressBar">
+        <div class="titleDiv">
+            <div><a href="https://kns.cnki.net/nzkhtml/xmlRead/trialRead.html?dbCode=CJFD&tableName=CJFDTOTAL&fileName=GDWX201803003&fileSourceType=1&invoice=ju56EO%2fN4gECgUgUUNWcgUupON0p4srGAum%2f1nx%2bwlkKmXrBcHwJnbpFOnteoipeZbhIPvZvXsuJLaLIXSbbILlbWOnS3zISRablaFOfaStbU6oGL6KAICddQbSvD1ZV45vjUU6CesjognXhBT%2f9JHqoLjN8OuX3h1%2bZxrSD0Cc%3d&appId=KNS_BASIC_PSMC">人物生平</a></div>
+            <div><a href="https://kns.cnki.net/nzkhtml/xmlRead/trialRead.html?dbCode=CJFD&tableName=CJFDTOTAL&fileName=MZXS202435009&fileSourceType=1&invoice=CRcTlp8WQ0dPiFhO3QlN%2f6Ej6OSEm4C8i1ddthLI7bJOizJPaifHg%2f3KPEs4exZmf2mDKge5jJONJVJhrqWrUbNxhXD2apncFpWDcIsDLYma8iRePvqulrvzPN3x%2bs23YvM13H41pL17%2bAjqDx2jGEmYGcAQwqO5nhzi8g18wy0%3d&appId=KNS_BASIC_PSMC" target="_blank">历史评价</a></div>
+            <div><a href="https://baike.baidu.com/item/%E6%9D%8E%E7%99%BD/1043?fr=ge_ala#6" target="_blank">主要作品</a></div>
+            <div><a href="https://baike.baidu.com/item/%E6%9D%8E%E7%99%BD/1043?fr=ge_ala#9" target="_blank">历史资料</a></div>
+            <div><a href="https://baijiahao.baidu.com/s?id=1813007032398417674&wfr=spider&for=pc" target="_blank">身世之谜</a></div>
+        </div>
+        <div class="barDiv">
+            <div class="bar"><div id="greenBar"></div></div>
+            <div class="numberList">
+                <div id="num1">1</div>
+                <div id="num2">2</div>
+                <div id="num3">3</div>
+                <div id="num4">4</div>
+                <div id="num5">5</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="title">
+        <div class="links">
+            <a href="https://baike.baidu.com/item/%E6%9D%8E%E7%99%BD/1043?fr=ge_ala" target="_blank">点击百度作者相关，鼠标划过查看作者简介</a>
+            <div class="text" style="display: none;">
+                <p>
+                    李白（701年2月28日—762年12月） ，字太白，号青莲居士 ，出生于蜀郡绵州昌隆县（今四川省绵阳市江油市青莲镇 ），一说山东人， 一说出生于西域碎叶 ，祖籍陇西成纪（今甘肃省秦安县）。唐朝伟大的浪漫主义诗人，凉武昭王李暠九世孙 。
+                    为人爽朗大方，乐于交友，爱好饮酒作诗，名列“酒中八仙” 。曾经得到唐玄宗李隆基赏识，担任翰林供奉 ，赐金放还后，游历全国，先后迎娶宰相许圉师、宗楚客的孙女。唐肃宗李亨即位后，卷入永王之乱，流放夜郎，辗转到达当涂县令李阳冰家。上元二年，去世，时年六十二 。
+                    著有《李太白集》 ，代表作有《望庐山瀑布》《行路难》《蜀道难》《将进酒》《早发白帝城》《黄鹤楼送孟浩然之广陵》等 。李白所作词赋，就其开创意义及艺术成就而言，享有极为崇高的地位，后世誉为“诗仙”，与诗圣杜甫并称“李杜”。
+                </p>
+            </div>
+        </div>
+        <div class="linktext">
+            <p class="txt">
+                君不见黄河之水天上来，奔流到海不复回。<br/><br/>
+                君不见高堂明镜悲白发，朝如青丝暮成雪。<br/><br/>
+                人生得意须尽欢，莫使金樽空对月。<br/><br/>
+                天生我材必有用，千金散尽还复来。<br/><br/>
+                烹羊宰牛且为乐，会须一饮三百杯。<br/><br/>
+                岑夫子，丹丘生，将进酒，杯莫停。<br/><br/>
+                与君歌一曲，请君为我倾耳听。<br/><br/>
+                钟鼓馔玉不足贵，但愿长醉不愿醒。<br/><br/>
+                古来圣贤皆寂寞，惟有饮者留其名。<br/><br/>
+                陈王昔时宴平乐，斗酒十千恣欢谑。<br/><br/>
+                主人何为言少钱，径须沽取对君酌。<br/><br/>
+                五花马、千金裘，呼儿将出换美酒，与尔同销万古愁。<br/>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

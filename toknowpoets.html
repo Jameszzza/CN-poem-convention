@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>了解诗人</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- 引入 jQuery -->
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('img/background.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; 
+            font-family: 'Noto Serif CJK', Arial, sans-serif;
+        }
+
+        .container {
+            width: 550px;
+            margin: 0 auto;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8); /* 半透明背景 */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #container {
+            position: relative;
+            width: 550px;
+            height: 300px;
+            border: 3px solid #333;
+            overflow: hidden;
+        }
+
+        #list {
+            position: absolute;
+            z-index: 1;
+            width: 2750px; 
+            height: 252px;
+            display: flex;
+            transition: left 0.3s ease; /* 添加平滑过渡效果 */
+        }
+
+        #list img {
+            width: 550px;
+            transition: all 0.3s ease;
+        }
+
+        .arrow {
+            display: block;
+            position: absolute;
+            top: 105px;
+            z-index: 2;
+            display: none;
+            width: 40px;
+            height: 60px;
+            font-size: 36px;
+            font-weight: bold;
+            line-height: 50px;
+            text-align: center;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #container:hover .arrow {
+            display: block;
+        }
+
+        #prev {
+            left: 3px;
+        }
+
+        #next {
+            right: 20px;
+        }
+
+        .arrow:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .info-container {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        /* 静音按钮样式调整 */
+        .mute-button {
+            position: absolute; /* 使用绝对定位 */
+            top: 10px;
+            left: 10px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 3; /* 确保按钮位于最前面 */
+        }
+
+        .mute-button:hover {
+            background-color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="container">
+            <div id="list" style="left:0px;">
+                <img src="img/libai.jpg" />
+                <img src="img/dufu.jpg" />
+                <img src="img/baijuyi.jpg" />
+                <img src="img/wangwei.jpg" />
+                <img src="img/xinqiji.jpg" />
+            </div>
+            <span id="prev" class="arrow">《</span>
+            <span id="next" class="arrow">》</span>
+        </div>
+        <div class="info-container" id="poet-info">
+            <p>李白：唐代诗人，被誉为‘诗仙’。代表作品：《将进酒》、《庐山谣》。经典诗句：‘君不见，黄河之水天上来，奔流到海不复回。’</p>
+        </div>
+        <button class="mute-button">静音</button>
+    </div>
+
+    <!-- 音频元素 -->
+    <audio id="audio" autoplay loop>
+        <source src="media/audio/1111111.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        $(document).ready(function() {
+            var $list = $('#list');
+            var $poetInfo = $('#poet-info');
+            var $audio = $('#audio');
+            
+            var poetInfos = [
+                            "李白（701年－762年），字太白，号青莲居士、谪仙人，出生于今四川省江油市。李白是唐代最著名的浪漫主义诗人之一，被誉为‘诗仙’。他的诗才横溢，个性豪放，自由奔放。李白的生平充满了传奇色彩，他早年出游，足迹遍及大半个中国，曾几度仕途未遂，最终因不满官场腐败而辞官隐居。李白的诗歌融汇了自然景观、人生感悟与政治抱负，尤其擅长描写壮丽的山水和豪放的情怀。他的诗歌语言奔放，意象鲜明，给人以极大的艺术震撼，深受后人推崇。代表作品有《将进酒》，其中‘君不见，黄河之水天上来，奔流到海不复回’成为千古绝句；《庐山谣》则展示了李白对自然景色的深刻热爱；《静夜思》则是他最具代表性的诗篇，简单却深情地表达了离乡的愁绪。",
+                            "杜甫（712年－770年），字子美，号少陵野老，出生于今河南省巩义市。杜甫是唐代伟大的现实主义诗人，与李白并称为‘李杜’，并以‘诗圣’著称。他一生多次遭遇政治和社会动荡，见证了唐朝盛世的衰落和民生疾苦，因此，他的诗作充满了对百姓疾苦的关注和对国家前途的忧虑。杜甫的诗作风格沉郁顿挫，语言精练，内容涉及政治、历史、民生等多个方面，具有极高的社会价值和历史价值。代表作品有《春望》，其中‘国破山河在，城春草木深’深刻表达了杜甫对国家破败的悲痛；《望岳》则写出了他对山川大地的敬仰以及个人理想的寄托。",
+                            "白居易（772年－846年），字乐天，号香山居士，出生于今河南省洛阳市。白居易是唐代杰出的政治家和文学家，尤以诗作见长。他一生仕途顺利，曾任多职，并因关心百姓疾苦而受到广大民众的喜爱。白居易的诗歌风格平易近人，语言通俗易懂，深刻地反映了社会民生、宫廷生活以及他个人的政治理想。他是‘新乐府’运动的倡导者之一，推崇以通俗的语言表现社会现实，关心民众疾苦。代表作品有《长恨歌》，其中通过描述唐玄宗和杨贵妃的爱情悲剧，反映了人性和命运的无常；《琵琶行》则通过描写一位琵琶女的悲惨遭遇，展现了他对社会底层人民的同情和对人生无常的感慨。",
+                            "辛弃疾（1140年－1207年），字幼安，号稼轩，南宋著名词人、军事将领，出生于今山东省济南市。辛弃疾一生参与过多次抗金战斗，忠诚爱国，志向远大。他的词作多具有强烈的个人风格，尤以豪放派词为主。他的词作表达了他强烈的爱国情感和对民族命运的关注。辛弃疾的豪放派词风格激昂雄浑，气吞万里，展示了他壮丽的志向和个人抱负。代表作品有《青玉案·元夕》，其中‘东风夜放花千树，更吹落、星如雨’描写了元宵节的繁华景象；《破阵子》则表现了他对战场上豪情万丈的回忆，以及对国家安危的深刻忧虑。",
+                            "王维（701年－761年），字摩诘，号辋川居士，出生于今陕西省蓝田县。王维是唐代著名的诗人、画家和音乐家，被誉为‘诗佛’。他早年以文人身份进入仕途，后隐居山水之间，过着隐逸的生活。王维的诗歌与其绘画相得益彰，尤擅长描写自然景色，传达出一种淡泊宁静的心境。其诗作以清新、平和著称，尤其擅长山水田园诗，影响深远。代表作品有《山居秋暝》，其中‘空山不见人，但闻人语响’展现了他对山水景色的深刻体验和宁静致远的思想；《送别》则通过简洁的描写，表达了他对友人的深情告别。"
+                        ];
+
+            // 初始化时设置文本内容为李白的信息
+            $poetInfo.html("<p>" + poetInfos[0] + "</p>");
+
+            // 上一个图片
+            $('#prev').click(function() {
+                updatePosition(1);
+            });
+
+            // 下一个图片
+            $('#next').click(function() {
+                updatePosition(-1);
+            });
+
+            function updatePosition(direction) {
+                var currentLeft = parseInt($list.css('left'), 10);
+                var newLeft = currentLeft + direction * 550;
+                if (newLeft > 0) {		
+                    newLeft = -2200;
+                } else if (newLeft < -2200) {
+                    newLeft = 0;
+                }
+                $list.css('left', newLeft + 'px');
+                setTimeout(updatePoetInfo, 300);
+            }
+
+            // 更新诗人信息
+            function updatePoetInfo() {
+                var index = Math.abs(parseInt($list.css('left'), 10) / 550);
+                $poetInfo.html("<p>" + poetInfos[index] + "</p>");
+            }
+
+            // 静音切换
+            $('.mute-button').click(function() {
+                var isMuted = $audio.prop('muted');
+                $audio.prop('muted', !isMuted);
+                $(this).text(isMuted ? "静音" : "播放");
+            });
+        });
+    </script>
+</body>
+</html>
